@@ -1,0 +1,60 @@
+module static_aut_tasks_1;
+
+  // Standard module task: Implicitly STATIC variable lifetime
+  task static_count(int id);
+    int count ; // Static initialization happens ONCE at time 0
+    count = id;
+    #1;
+    $display("Static task count = %0d\t[%0t]", count, $time);
+  endtask
+
+  // Automatic task: Local variables become AUTOMATIC by default
+  task automatic aut_count(int id);
+    int count ; // Dynamic initialization happens EVERY call
+        count = id;
+    #1;
+    $display("Automatic task count = %0d\t[%0t]", count, $time);
+  endtask
+
+  initial 
+    begin
+      fork
+        aut_count(4);
+        aut_count(5);
+        aut_count(6);
+        static_count(4);
+        static_count(5);
+        static_count(6);
+      join     
+    end
+endmodule: static_aut_tasks_1
+
+
+module static_aut_tasks_2;
+
+  initial static_display();
+  initial static_display();
+  initial static_display();
+  initial static_display();
+
+  // This is a static task
+  task static_display();
+    integer i = 0;
+    i = i + 1;
+    $display("Inside Static task, i = %0d", i);
+  endtask
+
+  initial aut_display();
+  initial aut_display();
+  initial aut_display();
+  initial aut_display();
+
+  // Note that the task is now automatic
+  task automatic aut_display();
+    integer i = 0;
+    i = i + 1;
+    $display("Inside Automatic task, i = %0d", i);
+  endtask
+  
+endmodule: static_aut_tasks_2
+
