@@ -39,7 +39,7 @@ module static_aut_tasks_2;
 
   // This is a static task
   task static_display();
-    integer i = 0;
+    integer i = 0; // initialization happens only during the first call of this task
     i = i + 1;
     $display("Inside Static task, i = %0d", i);
   endtask
@@ -51,7 +51,7 @@ module static_aut_tasks_2;
 
   // Note that the task is now automatic
   task automatic aut_display();
-    integer i = 0;
+    integer i = 0; // initialization happens each time the task is called, allocates seperate memory
     i = i + 1;
     $display("Inside Automatic task, i = %0d", i);
   endtask
